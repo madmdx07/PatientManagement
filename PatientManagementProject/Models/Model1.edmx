@@ -1,0 +1,335 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PatientDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblDay">
+          <Key>
+            <PropertyRef Name="DayId" />
+          </Key>
+          <Property Name="DayId" Type="int" Nullable="false" />
+          <Property Name="DayName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblDoctor">
+          <Key>
+            <PropertyRef Name="DocId" />
+          </Key>
+          <Property Name="DocId" Type="int" Nullable="false" />
+          <Property Name="DocName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SecId" Type="int" />
+          <Property Name="DayId" Type="int" />
+        </EntityType>
+        <EntityType Name="tblPatient">
+          <Key>
+            <PropertyRef Name="PId" />
+          </Key>
+          <Property Name="PId" Type="int" Nullable="false" />
+          <Property Name="PName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="50" />
+          <Property Name="Age" Type="int" />
+          <Property Name="SecId" Type="int" />
+          <Property Name="DocId" Type="int" />
+          <Property Name="DateTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblSector">
+          <Key>
+            <PropertyRef Name="SecId" />
+          </Key>
+          <Property Name="SecId" Type="int" Nullable="false" />
+          <Property Name="SecName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DayId" Type="int" />
+        </EntityType>
+        <Association Name="FK_tblDoctor_tblDay">
+          <End Role="tblDay" Type="Self.tblDay" Multiplicity="0..1" />
+          <End Role="tblDoctor" Type="Self.tblDoctor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblDay">
+              <PropertyRef Name="DayId" />
+            </Principal>
+            <Dependent Role="tblDoctor">
+              <PropertyRef Name="DayId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblDoctor_tblSector">
+          <End Role="tblSector" Type="Self.tblSector" Multiplicity="0..1" />
+          <End Role="tblDoctor" Type="Self.tblDoctor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSector">
+              <PropertyRef Name="SecId" />
+            </Principal>
+            <Dependent Role="tblDoctor">
+              <PropertyRef Name="SecId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblPatient_tblDoctor">
+          <End Role="tblDoctor" Type="Self.tblDoctor" Multiplicity="0..1" />
+          <End Role="tblPatient" Type="Self.tblPatient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblDoctor">
+              <PropertyRef Name="DocId" />
+            </Principal>
+            <Dependent Role="tblPatient">
+              <PropertyRef Name="DocId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblPatient_tblSector">
+          <End Role="tblSector" Type="Self.tblSector" Multiplicity="0..1" />
+          <End Role="tblPatient" Type="Self.tblPatient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSector">
+              <PropertyRef Name="SecId" />
+            </Principal>
+            <Dependent Role="tblPatient">
+              <PropertyRef Name="SecId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSector_tblDay">
+          <End Role="tblDay" Type="Self.tblDay" Multiplicity="0..1" />
+          <End Role="tblSector" Type="Self.tblSector" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblDay">
+              <PropertyRef Name="DayId" />
+            </Principal>
+            <Dependent Role="tblSector">
+              <PropertyRef Name="DayId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PatientDbModelStoreContainer">
+          <EntitySet Name="tblDay" EntityType="Self.tblDay" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblDoctor" EntityType="Self.tblDoctor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblPatient" EntityType="Self.tblPatient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblSector" EntityType="Self.tblSector" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tblDoctor_tblDay" Association="Self.FK_tblDoctor_tblDay">
+            <End Role="tblDay" EntitySet="tblDay" />
+            <End Role="tblDoctor" EntitySet="tblDoctor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblDoctor_tblSector" Association="Self.FK_tblDoctor_tblSector">
+            <End Role="tblSector" EntitySet="tblSector" />
+            <End Role="tblDoctor" EntitySet="tblDoctor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblPatient_tblDoctor" Association="Self.FK_tblPatient_tblDoctor">
+            <End Role="tblDoctor" EntitySet="tblDoctor" />
+            <End Role="tblPatient" EntitySet="tblPatient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblPatient_tblSector" Association="Self.FK_tblPatient_tblSector">
+            <End Role="tblSector" EntitySet="tblSector" />
+            <End Role="tblPatient" EntitySet="tblPatient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSector_tblDay" Association="Self.FK_tblSector_tblDay">
+            <End Role="tblDay" EntitySet="tblDay" />
+            <End Role="tblSector" EntitySet="tblSector" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PatientDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblDay">
+          <Key>
+            <PropertyRef Name="DayId" />
+          </Key>
+          <Property Name="DayId" Type="Int32" Nullable="false" />
+          <Property Name="DayName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="tblDoctors" Relationship="Self.FK_tblDoctor_tblDay" FromRole="tblDay" ToRole="tblDoctor" />
+          <NavigationProperty Name="tblSectors" Relationship="Self.FK_tblSector_tblDay" FromRole="tblDay" ToRole="tblSector" />
+        </EntityType>
+        <EntityType Name="tblDoctor">
+          <Key>
+            <PropertyRef Name="DocId" />
+          </Key>
+          <Property Name="DocId" Type="Int32" Nullable="false" />
+          <Property Name="DocName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SecId" Type="Int32" />
+          <Property Name="DayId" Type="Int32" />
+          <NavigationProperty Name="tblDay" Relationship="Self.FK_tblDoctor_tblDay" FromRole="tblDoctor" ToRole="tblDay" />
+          <NavigationProperty Name="tblSector" Relationship="Self.FK_tblDoctor_tblSector" FromRole="tblDoctor" ToRole="tblSector" />
+          <NavigationProperty Name="tblPatients" Relationship="Self.FK_tblPatient_tblDoctor" FromRole="tblDoctor" ToRole="tblPatient" />
+        </EntityType>
+        <EntityType Name="tblPatient">
+          <Key>
+            <PropertyRef Name="PId" />
+          </Key>
+          <Property Name="PId" Type="Int32" Nullable="false" />
+          <Property Name="PName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Age" Type="Int32" />
+          <Property Name="SecId" Type="Int32" />
+          <Property Name="DocId" Type="Int32" />
+          <NavigationProperty Name="tblDoctor" Relationship="Self.FK_tblPatient_tblDoctor" FromRole="tblPatient" ToRole="tblDoctor" />
+          <NavigationProperty Name="tblSector" Relationship="Self.FK_tblPatient_tblSector" FromRole="tblPatient" ToRole="tblSector" />
+          <Property Name="DateTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tblSector">
+          <Key>
+            <PropertyRef Name="SecId" />
+          </Key>
+          <Property Name="SecId" Type="Int32" Nullable="false" />
+          <Property Name="SecName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DayId" Type="Int32" />
+          <NavigationProperty Name="tblDay" Relationship="Self.FK_tblSector_tblDay" FromRole="tblSector" ToRole="tblDay" />
+          <NavigationProperty Name="tblDoctors" Relationship="Self.FK_tblDoctor_tblSector" FromRole="tblSector" ToRole="tblDoctor" />
+          <NavigationProperty Name="tblPatients" Relationship="Self.FK_tblPatient_tblSector" FromRole="tblSector" ToRole="tblPatient" />
+        </EntityType>
+        <Association Name="FK_tblDoctor_tblDay">
+          <End Role="tblDay" Type="Self.tblDay" Multiplicity="0..1" />
+          <End Role="tblDoctor" Type="Self.tblDoctor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblDay">
+              <PropertyRef Name="DayId" />
+            </Principal>
+            <Dependent Role="tblDoctor">
+              <PropertyRef Name="DayId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSector_tblDay">
+          <End Role="tblDay" Type="Self.tblDay" Multiplicity="0..1" />
+          <End Role="tblSector" Type="Self.tblSector" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblDay">
+              <PropertyRef Name="DayId" />
+            </Principal>
+            <Dependent Role="tblSector">
+              <PropertyRef Name="DayId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblDoctor_tblSector">
+          <End Role="tblSector" Type="Self.tblSector" Multiplicity="0..1" />
+          <End Role="tblDoctor" Type="Self.tblDoctor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSector">
+              <PropertyRef Name="SecId" />
+            </Principal>
+            <Dependent Role="tblDoctor">
+              <PropertyRef Name="SecId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblPatient_tblDoctor">
+          <End Role="tblDoctor" Type="Self.tblDoctor" Multiplicity="0..1" />
+          <End Role="tblPatient" Type="Self.tblPatient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblDoctor">
+              <PropertyRef Name="DocId" />
+            </Principal>
+            <Dependent Role="tblPatient">
+              <PropertyRef Name="DocId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblPatient_tblSector">
+          <End Role="tblSector" Type="Self.tblSector" Multiplicity="0..1" />
+          <End Role="tblPatient" Type="Self.tblPatient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSector">
+              <PropertyRef Name="SecId" />
+            </Principal>
+            <Dependent Role="tblPatient">
+              <PropertyRef Name="SecId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PatientDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblDays" EntityType="Self.tblDay" />
+          <EntitySet Name="tblDoctors" EntityType="Self.tblDoctor" />
+          <EntitySet Name="tblPatients" EntityType="Self.tblPatient" />
+          <EntitySet Name="tblSectors" EntityType="Self.tblSector" />
+          <AssociationSet Name="FK_tblDoctor_tblDay" Association="Self.FK_tblDoctor_tblDay">
+            <End Role="tblDay" EntitySet="tblDays" />
+            <End Role="tblDoctor" EntitySet="tblDoctors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSector_tblDay" Association="Self.FK_tblSector_tblDay">
+            <End Role="tblDay" EntitySet="tblDays" />
+            <End Role="tblSector" EntitySet="tblSectors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblDoctor_tblSector" Association="Self.FK_tblDoctor_tblSector">
+            <End Role="tblSector" EntitySet="tblSectors" />
+            <End Role="tblDoctor" EntitySet="tblDoctors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblPatient_tblDoctor" Association="Self.FK_tblPatient_tblDoctor">
+            <End Role="tblDoctor" EntitySet="tblDoctors" />
+            <End Role="tblPatient" EntitySet="tblPatients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblPatient_tblSector" Association="Self.FK_tblPatient_tblSector">
+            <End Role="tblSector" EntitySet="tblSectors" />
+            <End Role="tblPatient" EntitySet="tblPatients" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PatientDbModelStoreContainer" CdmEntityContainer="PatientDbEntities">
+          <EntitySetMapping Name="tblDays">
+            <EntityTypeMapping TypeName="PatientDbModel.tblDay">
+              <MappingFragment StoreEntitySet="tblDay">
+                <ScalarProperty Name="DayId" ColumnName="DayId" />
+                <ScalarProperty Name="DayName" ColumnName="DayName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblDoctors">
+            <EntityTypeMapping TypeName="PatientDbModel.tblDoctor">
+              <MappingFragment StoreEntitySet="tblDoctor">
+                <ScalarProperty Name="DocId" ColumnName="DocId" />
+                <ScalarProperty Name="DocName" ColumnName="DocName" />
+                <ScalarProperty Name="SecId" ColumnName="SecId" />
+                <ScalarProperty Name="DayId" ColumnName="DayId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblPatients">
+            <EntityTypeMapping TypeName="PatientDbModel.tblPatient">
+              <MappingFragment StoreEntitySet="tblPatient">
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="PId" ColumnName="PId" />
+                <ScalarProperty Name="PName" ColumnName="PName" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="SecId" ColumnName="SecId" />
+                <ScalarProperty Name="DocId" ColumnName="DocId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblSectors">
+            <EntityTypeMapping TypeName="PatientDbModel.tblSector">
+              <MappingFragment StoreEntitySet="tblSector">
+                <ScalarProperty Name="SecId" ColumnName="SecId" />
+                <ScalarProperty Name="SecName" ColumnName="SecName" />
+                <ScalarProperty Name="DayId" ColumnName="DayId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,42 @@
+﻿@model PatientManagementProject.Models.tblDoctor
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tblDoctor</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DocName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DocName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblDay.DayName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblDay.DayName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblSector.SecName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblSector.SecName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.DocId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

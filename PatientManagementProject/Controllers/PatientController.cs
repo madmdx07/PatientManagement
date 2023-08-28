@@ -21,18 +21,31 @@ namespace PatientManagementProject.Controllers
 
         public ActionResult Register()
         {
-            var doctors = from pat in db.tblPatients
+            var patients = from pat in db.tblPatients
                           join sec in db.tblSectors on pat.SecId equals sec.SecId
                           join doc in db.tblDoctors on pat.DocId equals doc.DocId
                           select new PatientModel
                           {
                               PId  = pat.PId,
-
                               DocId = doc.DocId,
                               DocName = doc.DocName,
                               SecId = doc.SecId,
                               SecName = sec.SecName
                           };
+            var docs = from doc in db.tblDoctors
+                       select new Dropdown
+                       {
+                           Id = doc.DocId,
+                           ItemList = doc.DocName.ToList()
+                       };
+            var secs = from sec in db.tblSectors
+                       select new Dropdown
+                       {
+                           Id = sec.SecId,
+                           ItemList = new List<SelectListItem> { sec.SecName },
+                           ItemList = sec.SecName.ToList()
+                       };
+
             //ViewBag.DayId = new SelectList(db.tblDays, "DayId", "DayName");
             ViewBag.DocId = new SelectList(db.tblDoctors, "DocId", "DocName");
             ViewBag.SecId = new SelectList(db.tblSectors, "SecId", "SecName");

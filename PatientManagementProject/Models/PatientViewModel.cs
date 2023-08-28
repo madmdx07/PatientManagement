@@ -34,12 +34,11 @@ namespace PatientManagementProject.Models
         public int SecId { get; set; }
         public string SecName { get; set; }
         public string DocName { get; set; }
-        public List<Dropdown> dropdowns { get; set; }
     }
 
     public class Dropdown
     {
-        public string text { get; set;}
-        public string value { get; set;}
+        public int Id { get; set;}
+        public List<SelectListItem> ItemList { get; set;}
     }
 }

@@ -11,9 +11,7 @@ namespace PatientManagementProject.Controllers
 {
     public class DoctorController : Controller
     {
-        PatientDbEntities db = new PatientDbEntities();
-        // GET: Doctor
-        public ActionResult Index()
+        public var Function()
         {
             var doctors = from doc in db.tblDoctors
                           join sec in db.tblSectors on doc.SecId equals sec.SecId
@@ -27,6 +25,13 @@ namespace PatientManagementProject.Controllers
                               SecName = sec.SecName,
                               DayName = day.DayName
                           };
+            return doctors;
+        }
+        PatientDbEntities db = new PatientDbEntities();
+        // GET: Doctor
+        public ActionResult Index()
+        {
+            var doctors = Function();
             return View(doctors.ToList());
         }
         public ActionResult Create()

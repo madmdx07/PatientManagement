@@ -46,6 +46,21 @@ namespace PatientManagementProject.Controllers
                            ItemList = sec.SecName.ToList()
                        };
 
+        //    public ActionResult Index()
+        //    {
+        //        var model = new MyViewModel
+        //        {
+        //            ItemList = new List<SelectListItem>
+        //{
+        //    new SelectListItem { Value = "1", Text = "Option 1" },
+        //    new SelectListItem { Value = "2", Text = "Option 2" },
+        //    new SelectListItem { Value = "3", Text = "Option 3" }
+        //}
+        //        };
+
+                return View(model);
+            }
+
             //ViewBag.DayId = new SelectList(db.tblDays, "DayId", "DayName");
             ViewBag.DocId = new SelectList(db.tblDoctors, "DocId", "DocName");
             ViewBag.SecId = new SelectList(db.tblSectors, "SecId", "SecName");

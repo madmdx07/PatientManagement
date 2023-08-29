@@ -87,7 +87,7 @@ namespace PatientMgmtProject.Controllers
             var patients = from pat in db.tblPatients
                            join doc in db.tblDoctors on pat.DocId equals doc.DocId
                            join sec in db.tblSectors on pat.SecId equals sec.SecId
-                           where doc.DocId == id
+                           where pat.PId == id
                            select new PatientModel
 
                            {
@@ -101,12 +101,12 @@ namespace PatientMgmtProject.Controllers
                                SecName = sec.SecName,
                                DocName = doc.DocName
                            };
-
+            var patient = patients.FirstOrDefault();
             if (patients == null)
             {
                 return HttpNotFound();
             }
-            return View(patients);
+            return View(patient);
         }
     }
 }

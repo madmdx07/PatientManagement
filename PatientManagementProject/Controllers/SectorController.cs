@@ -1,121 +1,66 @@
 ﻿using PatientManagementProject.Models;
+using PatientMgmtProject.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
-namespace PatientManagementProject.Controllers
+namespace PatientMgmtProject.Controllers
 {
     public class SectorController : Controller
     {
+        private PatientDbEntities db = new PatientDbEntities();
+
         // GET: Sector
-        PatientDbEntities db = new PatientDbEntities();
         public ActionResult Index()
         {
-            List<tblSector> sectors= db.tblSectors.ToList();
+            var sectors = from sec in db.tblSectors
+                          join day in db.tblDays on sec.DayId equals day.DayId
+                          select new SectorModel
+                          {
+
+                              SecId = sec.SecId,
+                              DayId = sec.DayId,
+                              SecName = sec.SecName,
+                              DayName = day.DayName
+                          };
             return View(sectors);
         }
-        //Get: Create
+
+        //GET: Create for Sectors
         public ActionResult Create()
         {
-            ViewBag.DayId = new SelectList(db.tblDays, "DayId", "DayName");
-            return View();
+
+            SectorInfoModel secinfo = new SectorInfoModel();
+
+            secinfo.DayList = db.tblDays.Select(x => new Dropdown
+            {
+                Id = x.DayId,
+                value = x.DayName,
+            }).ToList();
+            return View(secinfo);
+
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "SecId,SecName,DayId")] tblSector tblSector)
+        public ActionResult Create(SectorInfoModel imodel)
         {
+            tblSector ts = new tblSector();
+            ts.SecId = imodel.model.SecId;
+            ts.DayId = imodel.model.DayId;
+            ts.SecName = imodel.model.SecName;
+
             if (ModelState.IsValid)
             {
-                db.tblSectors.Add(tblSector);
+                db.tblSectors.Add(ts);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.DayId = new SelectList(db.tblDays, "DayId", "DayName", tblSector.DayId);
-            return View(tblSector);
+            return View(imodel);
         }
 
-        //GET edit page
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            tblSector tblSector = db.tblSectors.Find(id);
-            if (tblSector == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.DayId = new SelectList(db.tblDays, "DayId", "DayName", tblSector.DayId);
-            return View(tblSector);
-        }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "SecID,SecName,DayId")] tblSector tblSector)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(tblSector).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.DayId = new SelectList(db.tblDays, "DayId", "DayName", tblSector.DayId);
-            return View(tblSector);
-        }
-
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            tblSector tblSector = db.tblSectors.Find(id);
-            if (tblSector == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tblSector);
-        }
-
-        //GET delete
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            tblSector tblSector = db.tblSectors.Find(id);
-            if (tblSector == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tblSector);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            tblSector tblSector = db.tblSectors.Find(id);
-            db.tblSectors.Remove(tblSector);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }

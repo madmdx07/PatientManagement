@@ -1,7 +1,7 @@
-﻿@model IEnumerable<PatientManagementProject.Models.DoctorModel>
+﻿@model IEnumerable<PatientMgmtProject.Models.DoctorModel>
 
 @{
-    ViewBag.Title = "Doctors List";
+    ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
@@ -23,29 +23,42 @@
         <th>
             @Html.DisplayNameFor(model => model.DayName)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SecId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DayId)
+        </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.DocId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DocName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SecName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DayName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.DocId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.DocId} ) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.DocId })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DocId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DocName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SecName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DayName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SecId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DayId)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.DocId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.DocId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.DocId })
+            </td>
+        </tr>
+    }
 
 </table>

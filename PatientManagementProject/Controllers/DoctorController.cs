@@ -1,18 +1,32 @@
 ﻿using PatientManagementProject.Models;
+using PatientMgmtProject.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
-namespace PatientManagementProject.Controllers
+namespace PatientMgmtProject.Controllers
 {
     public class DoctorController : Controller
     {
-        public var Function()
+        private PatientDbEntities db = new PatientDbEntities();
+        // GET: Doctor
+
+        public ActionResult Index()
         {
+            //DoctorModel D = new DoctorModel();
+            //tblDoctor td = new tblDoctor(); 
+            //tblSector st = new tblSector();
+            //tblDay dt = new tblDay();
+            //D.DocId = td.DocId;
+            //D.DayId = td.DayId;
+            //D.DocName = td.DocName;
+            //D.SecId = td.SecId;
+            //D.SecName = st.SecName;
+            //D.DayName = dt.DayName;
+
             var doctors = from doc in db.tblDoctors
                           join sec in db.tblSectors on doc.SecId equals sec.SecId
                           join day in db.tblDays on doc.DayId equals day.DayId
@@ -25,117 +39,118 @@ namespace PatientManagementProject.Controllers
                               SecName = sec.SecName,
                               DayName = day.DayName
                           };
-            return doctors;
+            return View(doctors);
         }
-        PatientDbEntities db = new PatientDbEntities();
-        // GET: Doctor
-        public ActionResult Index()
-        {
-            var doctors = Function();
-            return View(doctors.ToList());
-        }
-        public ActionResult Create()
-        {
-            ViewBag.DayId = new SelectList(db.tblDays, "DayId", "DayName");
-            ViewBag.SecId = new SelectList(db.tblSectors, "SecId", "SecName");
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "DocId,DocName,SecId,DayId")] tblDoctor tblDoctor)
-        {
-            if (ModelState.IsValid)
-            {
-                db.tblDoctors.Add(tblDoctor);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.DayId = new SelectList(db.tblDays, "DayId", "DayName", tblDoctor.DayId);
-            ViewBag.SecId = new SelectList(db.tblSectors, "SecId", "SecName", tblDoctor.SecId);
-            return View(tblDoctor);
-        }
-
-        //GET edit page
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            tblDoctor tblDoctor = db.tblDoctors.Find(id);
-            if (tblDoctor == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.DayId = new SelectList(db.tblDays, "DayId", "DayName", tblDoctor.DayId);
-            ViewBag.SecId = new SelectList(db.tblSectors, "SecId", "SecName", tblDoctor.SecId);
-            return View(tblDoctor);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "DocId,DocName,SecId,DayId")] tblDoctor tblDoctor)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(tblDoctor).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.DayId = new SelectList(db.tblDays, "DayId", "DayName", tblDoctor.DayId);
-            ViewBag.SecId = new SelectList(db.tblSectors, "SecId", "SecName", tblDoctor.SecId);
-            return View(tblDoctor);
-        }
-
-        //GET details
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tblDoctor tblDoctor = db.tblDoctors.Find(id);
-            if (tblDoctor == null)
+            var doctors = from doc in db.tblDoctors
+                          join sec in db.tblSectors on doc.SecId equals sec.SecId
+                          join day in db.tblDays on doc.DayId equals day.DayId
+                          where doc.DocId == id
+                          select new DoctorModel
+                          {
+                              DocId = doc.DocId,
+                              DocName = doc.DocName,
+                              SecId = doc.SecId,
+                              DayId = doc.DayId,
+                              SecName = sec.SecName,
+                              DayName = day.DayName
+                          };
+            var doctorinfo = doctors;
+            if (doctors == null)
             {
                 return HttpNotFound();
             }
-            return View(tblDoctor);
+            return View(doctorinfo);
         }
 
-        //GET delete
-        public ActionResult Delete(int? id)
+        //GET: edit
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tblDoctor tblDoctor = db.tblDoctors.Find(id);
-            if (tblDoctor == null)
+            INOFOModel a = new INOFOModel();
+
+
+            var Modeldata = from doc in db.tblDoctors
+                            join sec in db.tblSectors on doc.SecId equals sec.SecId
+                            join day in db.tblDays on doc.DayId equals day.DayId
+                            where doc.DocId == id
+                            select new DoctorModel
+                            {
+                                DocId = doc.DocId,
+                                DocName = doc.DocName,
+                                SecId = doc.SecId,
+                                DayId = doc.DayId,
+                                //SecName = sec.SecName,
+                                //DayName = day.DayName,
+
+                            };
+            if (Modeldata == null)
             {
                 return HttpNotFound();
             }
-            return View(tblDoctor);
-        }
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            tblDoctor tblDoctor = db.tblDoctors.Find(id);
-            db.tblDoctors.Remove(tblDoctor);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            a.model = Modeldata.FirstOrDefault();
+            a.DayList = db.tblDays.Select(x => new Dropdown
             {
-                db.Dispose();
+                Id = x.DayId,
+                value = x.DayName,
+            }).ToList();
+
+            a.SecList = db.tblSectors.Select(x => new Dropdown
+            {
+                Id = x.SecId,
+                value = x.SecName,
+            }).ToList();
+
+            return View(a);
+        }
+
+        //GET: Create for doctors
+        public ActionResult Create()
+        {
+
+            INOFOModel docinfo = new INOFOModel();
+
+            docinfo.DayList = db.tblDays.Select(x => new Dropdown
+            {
+                Id = x.DayId,
+                value = x.DayName,
+            }).ToList();
+
+            docinfo.SecList = db.tblSectors.Select(x => new Dropdown
+            {
+                Id = x.SecId,
+                value = x.SecName,
+            }).ToList();
+
+            return View(docinfo);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(INOFOModel imodel)
+        {
+            tblDoctor td = new tblDoctor();
+            td.DocId = imodel.model.DocId;
+            td.DayId = imodel.model.DayId;
+            td.DocName = imodel.model.DocName;
+            td.SecId = imodel.model.SecId;
+
+            if (ModelState.IsValid)
+            {
+                db.tblDoctors.Add(td);
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
-            base.Dispose(disposing);
+            return View(imodel);
         }
     }
 }

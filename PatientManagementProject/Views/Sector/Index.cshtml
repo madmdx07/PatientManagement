@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PatientManagementProject.Models.tblSector>
+﻿@model IEnumerable<PatientMgmtProject.Models.SectorModel>
 
 @{
     ViewBag.Title = "Index";
@@ -12,28 +12,31 @@
 <table class="table">
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.SecId)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.SecName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.tblDay.DayName)
+            @Html.DisplayNameFor(model => model.DayName)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.SecName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.tblDay.DayName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.SecId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.SecId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.SecId })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SecId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SecName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DayName)
+            </td>
+
+        </tr>
+    }
 
 </table>

@@ -167,14 +167,11 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Doctor\Edit.cshtml" />
     <Content Include="Views\Doctor\Details.cshtml" />
-    <Content Include="Views\Doctor\Delete.cshtml" />
     <Content Include="Views\Sector\Index.cshtml" />
     <Content Include="Views\Sector\Create.cshtml" />
-    <Content Include="Views\Sector\Edit.cshtml" />
-    <Content Include="Views\Sector\Details.cshtml" />
-    <Content Include="Views\Sector\Delete.cshtml" />
-    <Content Include="Views\Patient\Register.cshtml" />
+    <Content Include="Views\Patient\Create.cshtml" />
     <Content Include="Views\Patient\Index.cshtml" />
+    <Content Include="Views\Patient\Details.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

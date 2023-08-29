@@ -1,93 +1,112 @@
 ﻿using PatientManagementProject.Models;
+using PatientMgmtProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
-namespace PatientManagementProject.Controllers
+namespace PatientMgmtProject.Controllers
 {
     public class PatientController : Controller
     {
-        PatientDbEntities db = new PatientDbEntities();
+
+        private PatientDbEntities db = new PatientDbEntities();
         // GET: Patient
         public ActionResult Index()
         {
-            List<tblPatient> patients = db.tblPatients.ToList();
+            var patients = from pat in db.tblPatients
+                           join doc in db.tblDoctors on pat.DocId equals doc.DocId
+                           join sec in db.tblSectors on pat.SecId equals sec.SecId
+                           select new PatientModel
+                           {
+                               PId = pat.PId,
+                               PName = pat.PName,
+                               SecId = pat.SecId,
+                               Address = pat.Address,
+                               Age = pat.Age,
+                               DateTime = (DateTime)pat.DateTime,
+                               DocId = pat.DocId,
+                               SecName = sec.SecName,
+                               DocName = doc.DocName
+                           };
             return View(patients);
         }
 
-        //GET: Register
 
-        public ActionResult Register()
+        //GET: Create for Sectors
+        public ActionResult Create()
         {
-            var patients = from pat in db.tblPatients
-                          join sec in db.tblSectors on pat.SecId equals sec.SecId
-                          join doc in db.tblDoctors on pat.DocId equals doc.DocId
-                          select new PatientModel
-                          {
-                              PId  = pat.PId,
-                              DocId = doc.DocId,
-                              DocName = doc.DocName,
-                              SecId = doc.SecId,
-                              SecName = sec.SecName
-                          };
-            var docs = from doc in db.tblDoctors
-                       select new Dropdown
-                       {
-                           Id = doc.DocId,
-                           ItemList = doc.DocName.ToList()
-                       };
-            var secs = from sec in db.tblSectors
-                       select new Dropdown
-                       {
-                           Id = sec.SecId,
-                           ItemList = new List<SelectListItem> { sec.SecName },
-                           ItemList = sec.SecName.ToList()
-                       };
 
-        //    public ActionResult Index()
-        //    {
-        //        var model = new MyViewModel
-        //        {
-        //            ItemList = new List<SelectListItem>
-        //{
-        //    new SelectListItem { Value = "1", Text = "Option 1" },
-        //    new SelectListItem { Value = "2", Text = "Option 2" },
-        //    new SelectListItem { Value = "3", Text = "Option 3" }
-        //}
-        //        };
+            PatientInfoModel patinfo = new PatientInfoModel();
 
-                return View(model);
-            }
+            patinfo.SecList = db.tblSectors.Select(x => new Dropdown
+            {
+                Id = x.SecId,
+                value = x.SecName,
+            }).ToList();
+            patinfo.DocList = db.tblDoctors.Select(x => new Dropdown
+            {
+                Id = x.DocId,
+                value = x.DocName,
+            }).ToList();
+            return View(patinfo);
 
-            //ViewBag.DayId = new SelectList(db.tblDays, "DayId", "DayName");
-            ViewBag.DocId = new SelectList(db.tblDoctors, "DocId", "DocName");
-            ViewBag.SecId = new SelectList(db.tblSectors, "SecId", "SecName");
-            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register([Bind(Include = "PId,PName,Address,Age,SecId,DocId")] tblPatient tblPatient)
+        public ActionResult Create(PatientInfoModel imodel)
         {
+            tblPatient tp = new tblPatient();
+            tp.PId = imodel.model.PId;
+            tp.DocId = imodel.model.DocId;
+            tp.SecId = imodel.model.SecId;
+            tp.PName = imodel.model.PName;
+            tp.Address = imodel.model.Address;
+            tp.Age = imodel.model.Age;
+            tp.DateTime = imodel.model.DateTime;
+
+
             if (ModelState.IsValid)
             {
-                tblPatient.DateTime = DateTime.Now;
-                db.tblPatients.Add(tblPatient);
+                tp.DateTime = DateTime.Now;
+                db.tblPatients.Add(tp);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.SecId = new SelectList(db.tblSectors, "SecId", "SecName", tblPatient.SecId);
-            ViewBag.DocId = new SelectList(db.tblDoctors, "DocId", "DocName", tblPatient.DocId);
-            return View(tblPatient);
+            return View(imodel);
         }
-
-        //GET: edit page
-        public ActionResult Edit()
+        public ActionResult Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var patients = from pat in db.tblPatients
+                           join doc in db.tblDoctors on pat.DocId equals doc.DocId
+                           join sec in db.tblSectors on pat.SecId equals sec.SecId
+                           where doc.DocId == id
+                           select new PatientModel
+
+                           {
+                               PId = pat.PId,
+                               PName = pat.PName,
+                               SecId = pat.SecId,
+                               Address = pat.Address,
+                               Age = pat.Age,
+                               DateTime = (DateTime)pat.DateTime,
+                               DocId = pat.DocId,
+                               SecName = sec.SecName,
+                               DocName = doc.DocName
+                           };
+
+            if (patients == null)
+            {
+                return HttpNotFound();
+            }
+            return View(patients);
         }
     }
 }

@@ -101,8 +101,8 @@ namespace PatientMgmtProject.Controllers
                                Age = pat.Age,
                                DateTime = (DateTime)pat.DateTime,
                                DocId = pat.DocId,
-                               SecName = sec.SecName,
-                               DocName = doc.DocName
+                               //SecName = sec.SecName,
+                               //DocName = doc.DocName
                            };
             var patient = patients.FirstOrDefault();
 
@@ -137,8 +137,6 @@ namespace PatientMgmtProject.Controllers
                                Age = pat.Age,
                                DateTime = (DateTime)pat.DateTime,
                                DocId = pat.DocId,
-                               SecName = sec.SecName,
-                               DocName = doc.DocName
                            };
             if (patients == null)
             {

@@ -2,7 +2,9 @@
 using PatientMgmtProject.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -59,6 +61,49 @@ namespace PatientMgmtProject.Controllers
                 return RedirectToAction("Index");
             }
             return View(imodel);
+        }
+
+        //GET: edit for sectors
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            SectorInfoModel sectorInfoModel = new SectorInfoModel();
+            var sector = from sec in db.tblSectors
+                         where sec.SecId == id
+                         select new SectorModel
+                         {
+                             SecId = sec.SecId,
+                             SecName = sec.SecName,
+                             DayId = sec.DayId,
+                         };
+            sectorInfoModel.model = sector.FirstOrDefault();
+            sectorInfoModel.DayList = db.tblSectors.Select(x => new Dropdown
+            {
+                Id = x.SecId,
+                value = x.SecName,
+            }).ToList();
+            return View();  
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(SectorInfoModel sectorInfoModel)
+        {
+            tblSector ts = new tblSector();
+            ts.SecId = sectorInfoModel.model.SecId;
+            ts.SecName = sectorInfoModel.model.SecName;
+            ts.DayId = sectorInfoModel.model.DayId; 
+
+            if (ModelState.IsValid)
+            {
+                db.Entry(ts).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return  View(sectorInfoModel);
         }
     }
 }

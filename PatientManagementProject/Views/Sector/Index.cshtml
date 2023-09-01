@@ -39,8 +39,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DayName)
             </td>
-
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.SecId })
+            </td>
         </tr>
     }
-
 </table>

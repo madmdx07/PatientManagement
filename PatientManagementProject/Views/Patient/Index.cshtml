@@ -31,12 +31,6 @@
         <th>
             @Html.DisplayNameFor(model => model.DateTime)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SecName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DocName)
-        </th>
     </tr>
 
     @foreach (var item in Model)
@@ -56,12 +50,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SecName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DocName)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.PId }) |

@@ -5,61 +5,36 @@
 }
 
 <h2>Details</h2>
-
-<div>
-    <h4>DoctorModel</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+</style>
+<table class="table">
+    <tr>
+        <th>
             @Html.DisplayNameFor(model => model.DocId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DocId)
-        </dd>
-
-        <dt>
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.DocName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DocName)
-        </dd>
-
-        <dt>
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.SecName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SecName)
-        </dd>
-
-        <dt>
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.DayName)
-        </dt>
+        </th>
+    </tr>
 
-        <dd>
-            @Html.DisplayFor(model => model.DayName)
-        </dd>
+    <tr>
+        <td>@Html.DisplayFor(model => model.DocId)</td>
+        <td>@Html.DisplayFor(model => model.DocName)</td>
+        <td>@Html.DisplayFor(model => model.SecName)</td>
+        <td>@Html.DisplayFor(model => model.DayName)</td>
+    </tr>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.SecId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SecId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DayId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DayId)
-        </dd>
-
-    </dl>
-</div>
+</table>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.DocId }) |
     @Html.ActionLink("Back to List", "Index")

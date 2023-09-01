@@ -60,7 +60,5 @@ namespace PatientMgmtProject.Controllers
             }
             return View(imodel);
         }
-
-
     }
 }

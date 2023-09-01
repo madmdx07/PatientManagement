@@ -5,7 +5,12 @@
 }
 
 <h2>Index</h2>
-
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+</style>
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -24,12 +29,6 @@
             @Html.DisplayNameFor(model => model.Age)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DocId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SecId)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.DateTime)
         </th>
         <th>
@@ -38,7 +37,6 @@
         <th>
             @Html.DisplayNameFor(model => model.DocName)
         </th>
-        <th></th>
     </tr>
 
     @foreach (var item in Model)
@@ -57,12 +55,6 @@
                 @Html.DisplayFor(modelItem => item.Age)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DocId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SecId)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.DateTime)
             </td>
             <td>
@@ -72,9 +64,9 @@
                 @Html.DisplayFor(modelItem => item.DocName)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit", "Edit", new { id = item.PId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.PId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.PId })
             </td>
         </tr>
     }

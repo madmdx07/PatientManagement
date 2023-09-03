@@ -29,5 +29,6 @@ namespace PatientManagementProject.Models
         public virtual DbSet<tblDoctor> tblDoctors { get; set; }
         public virtual DbSet<tblPatient> tblPatients { get; set; }
         public virtual DbSet<tblSector> tblSectors { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }

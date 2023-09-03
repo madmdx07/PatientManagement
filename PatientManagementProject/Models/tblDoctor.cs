@@ -24,6 +24,7 @@ namespace PatientManagementProject.Models
         public string DocName { get; set; }
         public Nullable<int> SecId { get; set; }
         public Nullable<int> DayId { get; set; }
+        public Nullable<bool> Activity { get; set; }
     
         public virtual tblDay tblDay { get; set; }
         public virtual tblSector tblSector { get; set; }

@@ -12,17 +12,12 @@ namespace PatientManagementProject.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class tblPatient
+    public partial class sysdiagram
     {
-        public int PId { get; set; }
-        public string PName { get; set; }
-        public string Address { get; set; }
-        public Nullable<int> Age { get; set; }
-        public Nullable<int> SecId { get; set; }
-        public Nullable<int> DocId { get; set; }
-        public Nullable<DateTime> DateTime { get; set; }
-        public Nullable<DateTime> Appointment { get; set; }
-        public virtual tblDoctor tblDoctor { get; set; }
-        public virtual tblSector tblSector { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

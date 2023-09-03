@@ -18,6 +18,9 @@ namespace PatientMgmtProject.Models
         public string DayName { get; set; }
         public Nullable<int> SecId { get; set; }
         public Nullable<int> DayId { get; set; }
+
+        [Display(Name = "IsActive?")]
+        public Nullable<bool> Activity { get; set; }
         public List<Dropdown> SecList { get; set; }
         public List<Dropdown> DayList { get; set; }
     }
@@ -35,6 +38,7 @@ namespace PatientMgmtProject.Models
 
         [Display(Name = "Registered on:")]
         public Nullable<DateTime> DateTime { get; set; }
+        public Nullable<DateTime> Appointment { get; set; }
 
         [Display(Name = "Sector")]
         public string SecName { get; set; }

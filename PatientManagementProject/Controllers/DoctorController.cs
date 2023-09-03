@@ -29,7 +29,8 @@ namespace PatientMgmtProject.Controllers
                               SecId = doc.SecId,
                               DayId = doc.DayId,
                               SecName = sec.SecName,
-                              DayName = day.DayName
+                              DayName = day.DayName,
+                              Activity = doc.Activity,
                           };
             return View(doctors);
         }
@@ -59,19 +60,19 @@ namespace PatientMgmtProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(INOFOModel imodel)
         {
+            if(!ModelState.IsValid)
+            {
+                return View(imodel);
+            }
             tblDoctor td = new tblDoctor();
             td.DocId = imodel.model.DocId;
             td.DayId = imodel.model.DayId;
             td.DocName = imodel.model.DocName;
             td.SecId = imodel.model.SecId;
-
-            if (ModelState.IsValid)
-            {
+            td.Activity = imodel.model.Activity;
                 db.tblDoctors.Add(td);
                 db.SaveChanges();
                 return RedirectToAction("Index");
-            }
-            return View(imodel);
         }
 
         //GET: Details
@@ -92,7 +93,8 @@ namespace PatientMgmtProject.Controllers
                               SecId = doc.SecId,
                               DayId = doc.DayId,
                               SecName = sec.SecName,
-                              DayName = day.DayName
+                              DayName = day.DayName,
+                              Activity = doc.Activity,
                           };
             var doctorinfo = doctors.FirstOrDefault();
             if (doctorinfo == null)
@@ -121,6 +123,7 @@ namespace PatientMgmtProject.Controllers
                                 DocName = doc.DocName,
                                 SecId = doc.SecId,
                                 DayId = doc.DayId,
+                                Activity = doc.Activity,
                             };
             if (Modeldata == null)
             {
@@ -153,6 +156,7 @@ namespace PatientMgmtProject.Controllers
             td.DayId = imodel.model.DayId;
             td.DocName = imodel.model.DocName;
             td.SecId = imodel.model.SecId;
+            td.Activity = imodel.model.Activity;
             if (ModelState.IsValid)
             {
                 db.Entry(td).State = EntityState.Modified;
@@ -162,8 +166,26 @@ namespace PatientMgmtProject.Controllers
 
             return View(imodel);
         }
-
-
+        //GET: Doctor/ActiveDoctors
+        public ActionResult ActiveDoctors()
+        {
+            var doctors = from doc in db.tblDoctors
+                          join sec in db.tblSectors on doc.SecId equals sec.SecId
+                          join day in db.tblDays on doc.DayId equals day.DayId
+                          orderby doc.DayId
+                          where doc.Activity == true
+                          select new DoctorModel
+                          {
+                              DocId = doc.DocId,
+                              DocName = doc.DocName,
+                              SecId = doc.SecId,
+                              DayId = doc.DayId,
+                              SecName = sec.SecName,
+                              DayName = day.DayName,
+                              Activity = doc.Activity,
+                          };
+            return View(doctors);
+        }
 
         //Get: Delete
         //public ActionResult Delete(int? id)

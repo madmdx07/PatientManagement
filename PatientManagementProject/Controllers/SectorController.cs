@@ -72,20 +72,13 @@ namespace PatientMgmtProject.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             SectorInfoModel sectorInfoModel = new SectorInfoModel();
-            var sector = from sec in db.tblSectors
-                         where sec.SecId == id
-                         select new SectorInfoModel
-                         {
-                             SecId = sec.SecId,
-                             SecName = sec.SecName,
-                             DayId = sec.DayId,
-                         };
-            sectorInfoModel = sector.FirstOrDefault();
-            sectorInfoModel.SecList = db.tblSectors.Select(x => new Dropdown
-            {
-                Id = x.SecId,
-                value = x.SecName,
-            }).ToList();
+            sectorInfoModel = db.tblSectors.Where(x => x.SecId == id).Select(x=>
+                new SectorInfoModel {
+                SecId = x.SecId,
+                DayId = x.DayId,
+                SecName=x.SecName,
+                }).FirstOrDefault();
+           
             sectorInfoModel.DayList = db.tblDays.Select(x => new Dropdown
             {
                 Id = x.DayId,

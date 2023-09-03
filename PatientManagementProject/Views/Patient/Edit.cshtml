@@ -15,6 +15,7 @@
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.model.DateTime)
 
         <div class="form-horizontal">
             <h4>PatientModel</h4>

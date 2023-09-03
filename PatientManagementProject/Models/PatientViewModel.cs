@@ -22,14 +22,6 @@ namespace PatientMgmtProject.Models
         public List<Dropdown> DayList { get; set; }
     }
 
-    public class SectorModel
-    {
-        public int SecId { get; set; }
-        public string SecName { get; set; }
-        public string DayName { get; set; }
-        public Nullable<int> DayId { get; set; }
-    }
-
     public class PatientModel
     {
         public int PId { get; set; }
@@ -49,6 +41,7 @@ namespace PatientMgmtProject.Models
 
         [Display(Name = "Doctor")]
         public string DocName { get; set; }
+        public string DayName { get; set; }
     }
 
     public class Dropdown
@@ -64,10 +57,26 @@ namespace PatientMgmtProject.Models
         public List<Dropdown> DayList { get; set; }
     }
 
+    public class SectorModel
+    {
+        public int SecId { get; set; }
+        public string SecName { get; set; }
+        public string DayName { get; set; }
+        public Nullable<int> DayId { get; set; }
+        public List<Dropdown> SecList { get; set; }
+        public List<Dropdown> DayList { get; set; }
+    }
     public class SectorInfoModel
     {
         public SectorModel model { get; set; }
+        public int SecId { get; set; }
+        public string SecName { get; set; }
+        public string DayName { get; set; }
+        public Nullable<int> DayId { get; set; }
+        public List<Dropdown> SecList { get; set; }
         public List<Dropdown> DayList { get; set; }
+
+        
     }
 
     public class PatientInfoModel

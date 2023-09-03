@@ -3,8 +3,10 @@ using PatientMgmtProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
+using System.Runtime.Remoting.Contexts;
 using System.Web;
 using System.Web.Mvc;
 
@@ -19,15 +21,14 @@ namespace PatientMgmtProject.Controllers
         {
             var sectors = from sec in db.tblSectors
                           join day in db.tblDays on sec.DayId equals day.DayId
-                          select new SectorModel
+                          select new SectorInfoModel
                           {
-
                               SecId = sec.SecId,
                               DayId = sec.DayId,
                               SecName = sec.SecName,
                               DayName = day.DayName
                           };
-            return View(sectors);
+            return View(sectors.ToList());
         }
 
         //GET: Create for Sectors
@@ -73,19 +74,24 @@ namespace PatientMgmtProject.Controllers
             SectorInfoModel sectorInfoModel = new SectorInfoModel();
             var sector = from sec in db.tblSectors
                          where sec.SecId == id
-                         select new SectorModel
+                         select new SectorInfoModel
                          {
                              SecId = sec.SecId,
                              SecName = sec.SecName,
                              DayId = sec.DayId,
                          };
-            sectorInfoModel.model = sector.FirstOrDefault();
-            sectorInfoModel.DayList = db.tblSectors.Select(x => new Dropdown
+            sectorInfoModel = sector.FirstOrDefault();
+            sectorInfoModel.SecList = db.tblSectors.Select(x => new Dropdown
             {
                 Id = x.SecId,
                 value = x.SecName,
             }).ToList();
-            return View();  
+            sectorInfoModel.DayList = db.tblDays.Select(x => new Dropdown
+            {
+                Id = x.DayId,
+                value = x.DayName,
+            }).ToList();
+            return View(sectorInfoModel);  
         }
 
         [HttpPost]
@@ -93,10 +99,9 @@ namespace PatientMgmtProject.Controllers
         public ActionResult Edit(SectorInfoModel sectorInfoModel)
         {
             tblSector ts = new tblSector();
-            ts.SecId = sectorInfoModel.model.SecId;
-            ts.SecName = sectorInfoModel.model.SecName;
-            ts.DayId = sectorInfoModel.model.DayId; 
-
+            ts.SecId = sectorInfoModel.SecId;
+            ts.SecName = sectorInfoModel.SecName;
+            ts.DayId = sectorInfoModel.DayId; 
             if (ModelState.IsValid)
             {
                 db.Entry(ts).State = EntityState.Modified;

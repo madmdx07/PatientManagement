@@ -21,6 +21,8 @@ namespace PatientMgmtProject.Controllers
             var patients = from pat in db.tblPatients
                            join doc in db.tblDoctors on pat.DocId equals doc.DocId
                            join sec in db.tblSectors on pat.SecId equals sec.SecId
+                           join day in db.tblDays on doc.DayId equals day.DayId
+                           orderby day.DayName
                            select new PatientModel
                            {
                                PId = pat.PId,
@@ -31,7 +33,8 @@ namespace PatientMgmtProject.Controllers
                                DateTime = (DateTime)pat.DateTime,
                                DocId = pat.DocId,
                                SecName = sec.SecName,
-                               DocName = doc.DocName
+                               DocName = doc.DocName,
+                               DayName = day.DayName,
                            };
 
             return View(patients);
@@ -69,7 +72,7 @@ namespace PatientMgmtProject.Controllers
             tp.PName = imodel.model.PName;
             tp.Address = imodel.model.Address;
             tp.Age = imodel.model.Age;
-            tp.DateTime = imodel.model.DateTime;
+            //tp.DateTime = imodel.model.DateTime;
 
 
             if (ModelState.IsValid)
@@ -101,8 +104,8 @@ namespace PatientMgmtProject.Controllers
                                Age = pat.Age,
                                DateTime = (DateTime)pat.DateTime,
                                DocId = pat.DocId,
-                               //SecName = sec.SecName,
-                               //DocName = doc.DocName
+                               SecName = sec.SecName,
+                               DocName = doc.DocName
                            };
             var patient = patients.FirstOrDefault();
 

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PatientMgmtProject.Models.SectorModel>
+﻿@model IEnumerable<PatientMgmtProject.Models.SectorInfoModel>
 
 @{
     ViewBag.Title = "Index";
@@ -41,9 +41,6 @@
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.SecId })
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.SecId }) 
             </td>
         </tr>
     }

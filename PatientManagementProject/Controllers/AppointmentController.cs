@@ -21,20 +21,21 @@ namespace PatientManagementProject.Controllers
                            orderby day.DayName
                            select new PatientModel
                            {
-                               PId = pat.PId,
-                               PName = pat.PName,
-                               SecId = pat.SecId,
-                               Address = pat.Address,
-                               Age = pat.Age,
-                               DateTime = (DateTime)pat.DateTime,
-                               DocId = pat.DocId,
-                               SecName = sec.SecName,
-                               DocName = doc.DocName,
-                               DayName = day.DayName,
-                               Appointment = pat.Appointment,
+                               //PId = pat.PId,
+                               //PName = pat.PName,
+                               //SecId = pat.SecId,
+                               //Address = pat.Address,
+                               //Age = pat.Age,
+                               //DateTime = (DateTime)pat.DateTime,
+                               //DocId = pat.DocId,
+                               //SecName = sec.SecName,
+                               //DocName = doc.DocName,
+                               //DayName = day.DayName,
+                               //Appointment = pat.Appointment,
+                               Appointment = null,
                            };
 
-            return View(patients);
+            return View(patients.FirstOrDefault());
         }
 
         //POST: Register
@@ -59,6 +60,11 @@ namespace PatientManagementProject.Controllers
             db.tblPatients.Add(tp);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Index()
+        {
+            return View();
         }
     }
 }

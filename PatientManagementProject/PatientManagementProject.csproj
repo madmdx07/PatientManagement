@@ -183,6 +183,7 @@
     <Content Include="Views\Sector\Edit.cshtml" />
     <Content Include="Views\Doctor\ActiveDoctors.cshtml" />
     <Content Include="Views\Appointment\Register.cshtml" />
+    <Content Include="Views\Appointment\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

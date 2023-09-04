@@ -64,7 +64,14 @@
     <div class="form-group">
         @Html.LabelFor(model => model.model.Appointment, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.model.Appointment, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.model.Appointment, new { htmlAttributes = new { @class = "form-control", @id = "nepali-datepicker" } })
+            <script src="~/Content/nepali.datepicker.v4.0.1.min.js"></script>
+            <script type="text/javascript">
+                window.onload = function () {
+                    var mainInput = document.getElementById("nepali-datepicker");
+                    mainInput.nepaliDatePicker();
+                };
+            </script>
             @Html.ValidationMessageFor(model => model.model.Appointment, "", new { @class = "text-danger" })
         </div>
     </div>

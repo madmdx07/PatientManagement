@@ -20,8 +20,9 @@ namespace PatientManagementProject.Models
         public Nullable<int> Age { get; set; }
         public Nullable<int> SecId { get; set; }
         public Nullable<int> DocId { get; set; }
-        public Nullable<DateTime> DateTime { get; set; }
-        public Nullable<DateTime> Appointment { get; set; }
+        public Nullable<System.DateTime> DateTime { get; set; }
+        public Nullable<System.DateTime> Appointment { get; set; }
+    
         public virtual tblDoctor tblDoctor { get; set; }
         public virtual tblSector tblSector { get; set; }
     }

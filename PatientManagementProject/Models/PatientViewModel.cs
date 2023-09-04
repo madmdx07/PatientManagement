@@ -46,6 +46,8 @@ namespace PatientMgmtProject.Models
         [Display(Name = "Doctor")]
         public string DocName { get; set; }
         public string DayName { get; set; }
+        public List<Dropdown> SecList { get; set; }
+        public List<Dropdown> DocList { get; set; }
     }
 
     public class Dropdown

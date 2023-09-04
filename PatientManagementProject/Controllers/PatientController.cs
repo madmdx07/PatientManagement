@@ -12,7 +12,6 @@ namespace PatientMgmtProject.Controllers
 {
     public class PatientController : Controller
     {
-
         private PatientDbEntities db = new PatientDbEntities();
         // GET: Patient
         public ActionResult Index()
@@ -22,7 +21,7 @@ namespace PatientMgmtProject.Controllers
                            join doc in db.tblDoctors on pat.DocId equals doc.DocId
                            join sec in db.tblSectors on pat.SecId equals sec.SecId
                            join day in db.tblDays on doc.DayId equals day.DayId
-                           orderby day.DayName
+                           orderby day.DayId
                            select new PatientModel
                            {
                                PId = pat.PId,
@@ -35,16 +34,14 @@ namespace PatientMgmtProject.Controllers
                                SecName = sec.SecName,
                                DocName = doc.DocName,
                                DayName = day.DayName,
+                               Appointment = pat.Appointment,
                            };
-
             return View(patients);
         }
-
 
         //GET: Create for Sectors
         public ActionResult Create()
         {
-
             PatientInfoModel patInfo = new PatientInfoModel();
 
             patInfo.SecList = db.tblSectors.Select(x => new Dropdown
@@ -58,7 +55,6 @@ namespace PatientMgmtProject.Controllers
                 value = x.DocName,
             }).ToList();
             return View(patInfo);
-
         }
 
         [HttpPost]
@@ -72,8 +68,7 @@ namespace PatientMgmtProject.Controllers
             tp.PName = imodel.model.PName;
             tp.Address = imodel.model.Address;
             tp.Age = imodel.model.Age;
-            //tp.DateTime = imodel.model.DateTime;
-
+            tp.Appointment = imodel.model.Appointment;
 
             if (ModelState.IsValid)
             {
@@ -95,7 +90,6 @@ namespace PatientMgmtProject.Controllers
                            join sec in db.tblSectors on pat.SecId equals sec.SecId
                            where pat.PId == id
                            select new PatientModel
-
                            {
                                PId = pat.PId,
                                PName = pat.PName,
@@ -105,7 +99,8 @@ namespace PatientMgmtProject.Controllers
                                DateTime = (DateTime)pat.DateTime,
                                DocId = pat.DocId,
                                SecName = sec.SecName,
-                               DocName = doc.DocName
+                               DocName = doc.DocName,
+                               Appointment = pat.Appointment,
                            };
             var patient = patients.FirstOrDefault();
 
@@ -114,7 +109,6 @@ namespace PatientMgmtProject.Controllers
                 return HttpNotFound();
             }
             return View(patient);
-
         }
 
         //GET: Edit
@@ -131,7 +125,6 @@ namespace PatientMgmtProject.Controllers
                            join sec in db.tblSectors on pat.SecId equals sec.SecId
                            where pat.PId == id
                            select new PatientModel
-
                            {
                                PId = pat.PId,
                                PName = pat.PName,
@@ -140,6 +133,7 @@ namespace PatientMgmtProject.Controllers
                                Age = pat.Age,
                                DateTime = (DateTime)pat.DateTime,
                                DocId = pat.DocId,
+                               Appointment = pat.Appointment,
                            };
             if (patients == null)
             {
@@ -172,6 +166,7 @@ namespace PatientMgmtProject.Controllers
             tp.Age = imodel.model.Age;
             tp.Address = imodel.model.Address;
             tp.DateTime = imodel.model.DateTime;
+            tp.Appointment = imodel.model.Appointment;
 
             if (ModelState.IsValid)
             {
@@ -183,9 +178,10 @@ namespace PatientMgmtProject.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             return View(imodel);
         }
+
+        //GET: Delete
         public ActionResult Delete(int? id)
         {
             if (id == null)

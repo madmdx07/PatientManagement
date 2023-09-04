@@ -19,14 +19,14 @@
           <Key>
             <PropertyRef Name="DayId" />
           </Key>
-          <Property Name="DayId" Type="int" Nullable="false" />
+          <Property Name="DayId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DayName" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="tblDoctor">
           <Key>
             <PropertyRef Name="DocId" />
           </Key>
-          <Property Name="DocId" Type="int" Nullable="false" />
+          <Property Name="DocId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DocName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="SecId" Type="int" />
           <Property Name="DayId" Type="int" />
@@ -36,19 +36,20 @@
           <Key>
             <PropertyRef Name="PId" />
           </Key>
-          <Property Name="PId" Type="int" Nullable="false" />
+          <Property Name="PId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Address" Type="varchar" MaxLength="50" />
           <Property Name="Age" Type="int" />
           <Property Name="SecId" Type="int" />
           <Property Name="DocId" Type="int" />
           <Property Name="DateTime" Type="datetime" />
+          <Property Name="Appointment" Type="date" />
         </EntityType>
         <EntityType Name="tblSector">
           <Key>
             <PropertyRef Name="SecId" />
           </Key>
-          <Property Name="SecId" Type="int" Nullable="false" />
+          <Property Name="SecId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SecName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="DayId" Type="int" />
         </EntityType>
@@ -178,6 +179,7 @@
           <NavigationProperty Name="tblDoctor" Relationship="Self.FK_tblPatient_tblDoctor" FromRole="tblPatient" ToRole="tblDoctor" />
           <NavigationProperty Name="tblSector" Relationship="Self.FK_tblPatient_tblSector" FromRole="tblPatient" ToRole="tblSector" />
           <Property Name="DateTime" Type="DateTime" Precision="3" />
+          <Property Name="Appointment" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="tblSector">
           <Key>
@@ -315,6 +317,7 @@
           <EntitySetMapping Name="tblPatients">
             <EntityTypeMapping TypeName="PatientDbModel.tblPatient">
               <MappingFragment StoreEntitySet="tblPatient">
+                <ScalarProperty Name="Appointment" ColumnName="Appointment" />
                 <ScalarProperty Name="DateTime" ColumnName="DateTime" />
                 <ScalarProperty Name="PId" ColumnName="PId" />
                 <ScalarProperty Name="PName" ColumnName="PName" />

@@ -14,7 +14,8 @@
         border-collapse: collapse;
     }
 </style>
-<table class="table">
+<div class="table-responsive">
+<table class="table table-bordered table-hover table-striped">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.DocId)
@@ -53,4 +54,6 @@
     }
 
 </table>
+    </div>
+
 <p>@Html.ActionLink("Show Active Dctors", "ActiveDoctors")</p>

@@ -57,6 +57,20 @@ namespace PatientMgmtProject.Controllers
             return View(patInfo);
         }
 
+        public ActionResult GetDoctorsBySector(int SecId)
+        {
+            var doctorsBySectors = db.tblDoctors
+                .Where(s => s.SecId == SecId)
+                .Select(s => new SelectListItem
+                {
+                    Value = s.DocId.ToString(),
+                    Text = s.DocName
+                }).ToList();
+
+            return Json(doctorsBySectors, JsonRequestBehavior.AllowGet);
+        }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(PatientInfoModel imodel)
